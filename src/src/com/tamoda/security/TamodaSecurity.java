@@ -101,8 +101,15 @@ public class TamodaSecurity extends AndroidNonvisibleComponent {
         return "UNKNOWN";
     }
 
-    // 6. ANTI MOD (Validasi Signature Tanda Tangan)
-    @SimpleFunction(description = "Mengembalikan true jika Hash Signature APK cocok dengan Hash asli (Aman dari Modingan MT Manager).")
+    // 6. ANTI MOD (Validasi Dual Signature: APK & Play Store)
+    @SimpleFunction(description = "Mengembalikan true jika Hash Signature cocok dengan APK asli ATAU Play Store. Aman dan anti ribet.")
+    public boolean IsSignatureValidDual(String hashApk, String hashPlayStore) {
+        String currentHash = GetAppSignatureHash();
+        return currentHash.equalsIgnoreCase(hashApk) || currentHash.equalsIgnoreCase(hashPlayStore);
+    }
+
+    // 7. ANTI MOD VERSI LAMA (Validasi Signature Tunggal)
+    @SimpleFunction(description = "Mengembalikan true jika Hash Signature APK cocok dengan Hash tunggal.")
     public boolean IsSignatureValid(String originalHash) {
         String currentHash = GetAppSignatureHash();
         return currentHash.equalsIgnoreCase(originalHash);
